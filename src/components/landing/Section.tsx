@@ -2,12 +2,21 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import type { SectionProps } from "@/types"
 
+function highlightNumbers(text: string) {
+  const parts = text.split(/([\d₽×,.%]+(?:\s?[МТмтлнMLmtln]?р?н?л?н?)?)/g)
+  return parts.map((part, i) =>
+    /[₽×\d]/.test(part)
+      ? <span key={i} className="text-[#FF4D00]">{part}</span>
+      : part
+  )
+}
+
 export default function Section({ id, title, subtitle, content, isActive, showButton, buttonText }: SectionProps) {
   return (
     <section id={id} className="relative h-screen w-full snap-start flex flex-col justify-center p-8 md:p-16 lg:p-24">
       {subtitle && (
         <motion.div
-          className="mb-12"
+          className="mb-10"
           initial={{ opacity: 0, y: 20 }}
           animate={isActive ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
@@ -21,16 +30,16 @@ export default function Section({ id, title, subtitle, content, isActive, showBu
         animate={isActive ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5 }}
       >
-        {title}
+        {highlightNumbers(title)}
       </motion.h2>
       {content && (
         <motion.p
-          className="text-lg md:text-xl lg:text-2xl max-w-2xl mt-6 text-neutral-400"
+          className="text-lg md:text-xl lg:text-2xl max-w-2xl mt-6 text-neutral-400 leading-relaxed"
           initial={{ opacity: 0, y: 50 }}
           animate={isActive ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          {content}
+          {highlightNumbers(content)}
         </motion.p>
       )}
       {showButton && (
@@ -43,7 +52,7 @@ export default function Section({ id, title, subtitle, content, isActive, showBu
           <Button
             variant="outline"
             size="lg"
-            className="text-[#FF4D00] bg-transparent border-[#FF4D00] hover:bg-[#FF4D00] hover:text-black transition-colors"
+            className="text-[#FF4D00] bg-transparent border-[#FF4D00] hover:bg-[#FF4D00] hover:text-black transition-colors text-base px-8 py-6"
           >
             {buttonText}
           </Button>
